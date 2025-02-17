@@ -9,9 +9,9 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
   (async () => {
     try {
       await sequelize.authenticate();
-      console.log('Connexion à PostgreSQL réussie');
+      console.log('Connection to database Done !');
     } catch (error) {
-      console.error('Impossible de se connecter à PostgreSQL:', error);
+      console.error('Impossible to connect to  PostgreSQL:', error);
     }
   })();
-module.exports=sequelize;
+export default sequelize;

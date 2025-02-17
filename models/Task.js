@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize";
+import sequelize from "../config/database.js";
 import { DataTypes } from "sequelize";
 
-const Task = Sequelize.define("Task", {
+const Task = sequelize.define("Task", {
   title: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -10,12 +10,21 @@ const Task = Sequelize.define("Task", {
     type: DataTypes.DATE,
     allowNull: true,
   },
+  description:{
+    type:DataTypes.STRING,
+    allowNull:true
+  },
   completed: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
 });
 (async () => {
-    await Sequelize.sync();
-  })();
-module.exports=Task;
+  try {
+    await sequelize.sync({ alter: true });  // Met à jour la table sans la recréer
+    console.log("Table was synchronized!");
+  } catch (error) {
+    console.error("EError in synchornisation of the table :", error);
+  }
+})();
+export default Task

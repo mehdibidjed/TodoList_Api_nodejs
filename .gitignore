@@ -1,0 +1,9 @@
+#node modules 
+nodemodules/
+
+
+# environement varialble
+
+.env
+
+
