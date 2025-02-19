@@ -1,30 +1,37 @@
 import sequelize from "../config/database.js";
 import { DataTypes } from "sequelize";
-
-const Task = sequelize.define("Task", {
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
+import User from "./User.js";
+const Task = sequelize.define(
+  "Task",
+  {
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    completed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: User, key: "userId" }, // Foreign key reference
+      onDelete: "CASCADE", // If user is deleted, delete all their posts
+    },
   },
-  date: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  description:{
-    type:DataTypes.STRING,
-    allowNull:true
-  },
-  completed: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-});
-(async () => {
-  try {
-    await sequelize.sync({ alter: true });  // Met à jour la table sans la recréer
-    console.log("Table was synchronized!");
-  } catch (error) {
-    console.error("EError in synchornisation of the table :", error);
+  {
+    timestamps: false, // Désactive createdAt et updatedAt
   }
-})();
-export default Task
+);
+User.hasMany(Task, { foreignKey: "userId" });
+Task.belongsTo(User, { foreignKey: "userId" });
+
+export default Task;

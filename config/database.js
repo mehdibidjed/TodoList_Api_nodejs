@@ -8,10 +8,10 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
 
   (async () => {
     try {
-      await sequelize.authenticate();
-      console.log('Connection to database Done !');
+      await sequelize.sync({ alter: true }); // Met à jour la table sans la recréer
+      console.log("Table was synchronized!");
     } catch (error) {
-      console.error('Impossible to connect to  PostgreSQL:', error);
+      console.error("EError in synchornisation of the table :", error);
     }
   })();
 export default sequelize;
